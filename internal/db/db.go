@@ -4,6 +4,7 @@ import (
 	"fmt"
 
 	"github.com/idmaksim/url-shortener-api/internal/config"
+	"github.com/idmaksim/url-shortener-api/internal/domain/models"
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
 )
@@ -21,5 +22,9 @@ func NewDB(cfg *config.DatabaseConfig) (*DB, error) {
 		return nil, err
 	}
 
-	return &DB{DB: gormDB}, nil
+	db := &DB{DB: gormDB}
+
+	db.DB.AutoMigrate(&models.URL{})
+
+	return db, nil
 }
