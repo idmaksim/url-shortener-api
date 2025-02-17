@@ -26,9 +26,6 @@ func LoadConfig() (*Config, error) {
 		return nil, fmt.Errorf("error loading HTTP config: %w", err)
 	}
 
-	fmt.Println(database)
-	fmt.Println(http)
-
 	return &Config{
 		Database: database,
 		Http:     http,

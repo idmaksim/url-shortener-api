@@ -16,10 +16,6 @@ func LoadHTTPConfig() (*HTTPConfig, error) {
 		return nil, err
 	}
 
-	if config.Port == 0 {
-		config.Port = 8080
-	}
-
 	return &config, nil
 
 }
