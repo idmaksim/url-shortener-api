@@ -3,13 +3,13 @@ package handlers
 import (
 	"net/http"
 
-	domainServices "github.com/idmaksim/url-shortener-api/internal/domain/services"
-	"github.com/idmaksim/url-shortener-api/internal/infrastructure/services"
+	"github.com/idmaksim/url-shortener-api/internal/domain/services"
 	"github.com/labstack/echo/v4"
+
 )
 
 type URLHandler struct {
-	urlService domainServices.URLService
+	urlService *services.URLService
 }
 
 func NewURLHandler() *URLHandler {
