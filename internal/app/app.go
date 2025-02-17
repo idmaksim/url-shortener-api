@@ -41,5 +41,12 @@ func (a *App) Serve() error {
 	e.Use(middleware.Logger())
 	e.Use(middleware.Recover())
 
+	a.RegisterRoutes(e)
+
 	return e.Start(fmt.Sprintf(":%d", a.cfg.Http.Port))
+}
+
+func (a *App) RegisterRoutes(e *echo.Echo) {
+	e.POST("/url", a.handler.Create)
+	e.GET("/url/:shortURL", a.handler.Get)
 }
