@@ -4,6 +4,7 @@ import (
 	"net/http"
 
 	"github.com/idmaksim/url-shortener-api/internal/config"
+	httpErrors "github.com/idmaksim/url-shortener-api/internal/delivery/http/errors"
 	"github.com/idmaksim/url-shortener-api/internal/delivery/http/requests"
 	"github.com/idmaksim/url-shortener-api/internal/domain/errors"
 	"github.com/idmaksim/url-shortener-api/internal/domain/services"
@@ -20,6 +21,17 @@ func NewURLHandler(cfg *config.Config) *URLHandler {
 	}
 }
 
+// Create godoc
+// @Summary Create short URL
+// @Description Creates a short URL from the original URL
+// @Tags urls
+// @Accept json
+// @Produce json
+// @Param request body requests.URLCreateRequest true "URL to shorten"
+// @Success 200 {object} models.URL
+// @Failure 400 {object} httpErrors.HTTPError
+// @Failure 500 {object} httpErrors.HTTPError
+// @Router /url [post]
 func (h *URLHandler) Create(c echo.Context) error {
 	var request requests.URLCreateRequest
 	if err := c.Bind(&request); err != nil {
@@ -34,15 +46,27 @@ func (h *URLHandler) Create(c echo.Context) error {
 	return c.JSON(http.StatusOK, newUrl)
 }
 
+// Get godoc
+// @Summary Get original URL
+// @Description Gets the original URL by short URL
+// @Tags urls
+// @Accept json
+// @Produce json
+// @Param shortURL path string true "Short URL"
+// @Success 200 {object} models.URL
+// @Failure 404 {object} httpErrors.HTTPError
+// @Failure 500 {object} httpErrors.HTTPError
+// @Router /{shortURL} [get]
 func (h *URLHandler) Get(c echo.Context) error {
 	shortURL := c.Param("shortURL")
 
 	url, err := h.urlService.Get(shortURL)
 	if err != nil {
 		if err == errors.ErrNotFound {
-			return c.JSON(http.StatusNotFound, err.Error())
+			return c.JSON(http.StatusNotFound, httpErrors.NewHTTPError("URL not found", http.StatusNotFound))
 		}
-		return c.JSON(http.StatusInternalServerError, err.Error())
+		return c.JSON(http.StatusInternalServerError, httpErrors.NewHTTPError(err.Error(), http.StatusInternalServerError))
 	}
-	return c.JSON(http.StatusOK, url)
+
+	return c.Redirect(http.StatusTemporaryRedirect, url.OriginalURL)
 }

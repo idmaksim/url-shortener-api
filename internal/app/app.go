@@ -8,6 +8,7 @@ import (
 	"github.com/idmaksim/url-shortener-api/internal/delivery/http/handlers"
 	"github.com/labstack/echo/v4"
 	"github.com/labstack/echo/v4/middleware"
+	echoSwagger "github.com/swaggo/echo-swagger"
 )
 
 type App struct {
@@ -40,5 +41,7 @@ func (a *App) Serve() error {
 
 func (a *App) RegisterRoutes(e *echo.Echo) {
 	e.POST("/url", a.handler.Create)
-	e.GET("/url/:shortURL", a.handler.Get)
+	e.GET(":shortURL", a.handler.Get)
+
+	e.GET("/swagger/*", echoSwagger.WrapHandler)
 }

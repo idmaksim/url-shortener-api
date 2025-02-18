@@ -1,6 +1,8 @@
 package services
 
 import (
+	"fmt"
+
 	"github.com/google/uuid"
 	"github.com/idmaksim/url-shortener-api/internal/config"
 	"github.com/idmaksim/url-shortener-api/internal/delivery/http/requests"
@@ -11,11 +13,13 @@ import (
 
 type URLService struct {
 	repo domainRepositories.URLRepository
+	cfg  *config.Config
 }
 
 func NewURLService(cfg *config.Config) *URLService {
 	return &URLService{
 		repo: repositories.NewURLRepository(cfg),
+		cfg:  cfg,
 	}
 }
 
@@ -25,7 +29,14 @@ func (s *URLService) Create(request requests.URLCreateRequest) (*models.URL, err
 		ShortURL:    s.GenerateShortURL(request.OriginalURL),
 	}
 
-	return s.repo.Create(url)
+	newUrl, err := s.repo.Create(url)
+	if err != nil {
+		return nil, err
+	}
+
+	newUrl.ShortURL = fmt.Sprintf("%s/%s", s.cfg.Http.Host, newUrl.ShortURL)
+
+	return newUrl, nil
 }
 
 func (s *URLService) Get(shortURL string) (*models.URL, error) {
