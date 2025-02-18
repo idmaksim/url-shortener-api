@@ -7,6 +7,7 @@ This project was implemented based on the requirements from [roadmap.sh URL Shor
 
 - 🎯 Create short URLs from long ones
 - 🔄 Redirect from short to original URLs
+- 🗑️ Automatic URL deletion after 50 accesses
 - 📚 Swagger API documentation
 - 🏗️ Clean Architecture design
 - 🐘 PostgreSQL storage
