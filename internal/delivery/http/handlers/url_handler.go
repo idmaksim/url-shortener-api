@@ -49,17 +49,6 @@ func (h *URLHandler) Create(c echo.Context) error {
 	return c.JSON(http.StatusOK, response)
 }
 
-// Get godoc
-// @Summary Get original URL
-// @Description Gets the original URL by short URL
-// @Tags urls
-// @Accept json
-// @Produce json
-// @Param shortURL path string true "Short URL"
-// @Success 200 {object} models.URL
-// @Failure 404 {object} httpErrors.HTTPError
-// @Failure 500 {object} httpErrors.HTTPError
-// @Router /{shortURL} [get]
 func (h *URLHandler) Get(c echo.Context) error {
 	shortURL := c.Param("shortURL")
 
