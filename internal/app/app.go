@@ -23,7 +23,7 @@ func NewApp() *App {
 
 	return &App{
 		cfg:     cfg,
-		handler: handlers.NewURLHandler(),
+		handler: handlers.NewURLHandler(cfg),
 	}
 }
 
