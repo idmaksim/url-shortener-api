@@ -6,6 +6,7 @@ import (
 	"github.com/idmaksim/url-shortener-api/internal/config"
 	httpErrors "github.com/idmaksim/url-shortener-api/internal/delivery/http/errors"
 	"github.com/idmaksim/url-shortener-api/internal/delivery/http/requests"
+	"github.com/idmaksim/url-shortener-api/internal/delivery/http/responses"
 	"github.com/idmaksim/url-shortener-api/internal/domain/errors"
 	"github.com/idmaksim/url-shortener-api/internal/domain/services"
 	"github.com/labstack/echo/v4"
@@ -28,7 +29,7 @@ func NewURLHandler(cfg *config.Config) *URLHandler {
 // @Accept json
 // @Produce json
 // @Param request body requests.URLCreateRequest true "URL to shorten"
-// @Success 200 {object} models.URL
+// @Success 200 {object} responses.URLResponse
 // @Failure 400 {object} httpErrors.HTTPError
 // @Failure 500 {object} httpErrors.HTTPError
 // @Router /url [post]
@@ -43,7 +44,9 @@ func (h *URLHandler) Create(c echo.Context) error {
 		return c.JSON(http.StatusInternalServerError, err.Error())
 	}
 
-	return c.JSON(http.StatusOK, newUrl)
+	response := responses.NewURLResponse(newUrl)
+
+	return c.JSON(http.StatusOK, response)
 }
 
 // Get godoc

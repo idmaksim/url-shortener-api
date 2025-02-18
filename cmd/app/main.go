@@ -10,7 +10,6 @@ import (
 // @title URL Shortener API
 // @version 1.0
 // @description Service for shortening URLs
-// @host localhost:8080
 // @BasePath /
 func main() {
 	app := app.NewApp()
