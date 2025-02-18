@@ -1,6 +1,7 @@
 # 🔗 URL Shortener API
 
 A modern and efficient URL shortening service built with Go, following clean architecture principles. This service allows you to create shortened versions of long URLs for easier sharing and management.
+This project was implemented based on the requirements from [roadmap.sh URL Shortener project](https://roadmap.sh/projects/url-shortening-service).
 
 ## ✨ Features
 
