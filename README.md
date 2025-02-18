@@ -11,6 +11,7 @@ This project was implemented based on the requirements from [roadmap.sh URL Shor
 - 🏗️ Clean Architecture design
 - 🐘 PostgreSQL storage
 - 🔒 Error handling and validation
+- 🔒 Rate limiting
 
 ## 🚀 Getting Started
 
@@ -89,6 +90,7 @@ GET /{shortURL}     # Redirect to original URL
 - **Configuration**: Environment variables with godotenv
 - **Error Handling**: Custom domain errors
 - **URL Generation**: UUID-based short URLs
+- **Rate Limiting**: IP-based rate limiting
 
 ## 🔨 Development
 
