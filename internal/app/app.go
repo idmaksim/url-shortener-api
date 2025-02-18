@@ -6,6 +6,8 @@ import (
 
 	"github.com/idmaksim/url-shortener-api/internal/config"
 	"github.com/idmaksim/url-shortener-api/internal/delivery/http/handlers"
+	"github.com/idmaksim/url-shortener-api/internal/delivery/http/middlewares"
+	rateLimiter "github.com/idmaksim/url-shortener-api/internal/delivery/http/rate_limiter"
 	"github.com/labstack/echo/v4"
 	"github.com/labstack/echo/v4/middleware"
 	echoSwagger "github.com/swaggo/echo-swagger"
@@ -40,8 +42,10 @@ func (a *App) Serve() error {
 }
 
 func (a *App) RegisterRoutes(e *echo.Echo) {
+	limiter := rateLimiter.NewIPRateLimiter(10, 10)
+
 	e.POST("/url", a.handler.Create)
-	e.GET(":shortURL", a.handler.Get)
+	e.GET(":shortURL", a.handler.Get, middlewares.ThrottleMiddleware(limiter))
 
 	e.GET("/swagger/*", echoSwagger.WrapHandler)
 }
