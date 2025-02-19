@@ -13,6 +13,7 @@ This project was implemented based on the requirements from [roadmap.sh URL Shor
 - 📦 Redis caching
 - 🔒 Error handling and validation
 - 🔒 Rate limiting
+- 🕹️ Testing
 
 ## 🚀 Getting Started
 
@@ -91,6 +92,7 @@ GET /{shortURL}     # Redirect to original URL
 - **Clean Architecture**: Clear separation of concerns
 - **Database**: PostgreSQL with GORM
 - **API Framework**: Echo
+- **Testing**: Testify
 - **Documentation**: Swagger/OpenAPI
 - **Configuration**: Environment variables with godotenv
 - **Error Handling**: Custom domain errors
