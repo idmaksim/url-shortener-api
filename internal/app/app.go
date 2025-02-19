@@ -33,7 +33,9 @@ func NewApp() *App {
 func (a *App) Serve() error {
 	e := echo.New()
 
-	e.Use(middleware.Logger())
+	e.Use(middleware.LoggerWithConfig(middleware.LoggerConfig{
+		Format: "[${method}] ${uri} ${status} ${latency_human} \n",
+	}))
 	e.Use(middleware.Recover())
 
 	a.RegisterRoutes(e)
