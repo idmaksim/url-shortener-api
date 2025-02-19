@@ -1,10 +1,13 @@
 package repositories
 
 import (
+	libErrors "errors"
+
 	"github.com/idmaksim/url-shortener-api/internal/config"
 	"github.com/idmaksim/url-shortener-api/internal/db"
-	"github.com/idmaksim/url-shortener-api/internal/domain/errors"
 	"github.com/idmaksim/url-shortener-api/internal/domain/models"
+	"github.com/idmaksim/url-shortener-api/internal/errors"
+	"gorm.io/gorm"
 )
 
 type URLRepository struct {
@@ -28,7 +31,15 @@ func (r *URLRepository) FindOneByShortURL(shortURL string) (*models.URL, error) 
 
 	err := r.db.DB.Where("short_url = ?", shortURL).First(&url).Error
 	if err != nil {
-		return nil, errors.ErrNotFound
+		if libErrors.Is(err, gorm.ErrRecordNotFound) {
+			return nil, errors.NewServiceError(
+				errors.ErrCodeNotFound,
+				"URL not found",
+				nil,
+				err,
+			)
+		}
+		return nil, err
 	}
 
 	return &url, nil

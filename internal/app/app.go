@@ -38,11 +38,13 @@ func (a *App) Serve() error {
 
 	a.RegisterRoutes(e)
 
+	e.HTTPErrorHandler = handlers.ErrorHandler
+
 	return e.Start(fmt.Sprintf(":%d", a.cfg.Http.Port))
 }
 
 func (a *App) RegisterRoutes(e *echo.Echo) {
-	limiter := rateLimiter.NewIPRateLimiter(10, 10)
+	limiter := rateLimiter.NewIPRateLimiter(1, 1)
 
 	e.POST("/url", a.handler.Create)
 	e.GET(":shortURL", a.handler.Get, middlewares.ThrottleMiddleware(limiter))

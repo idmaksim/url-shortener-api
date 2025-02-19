@@ -4,10 +4,8 @@ import (
 	"net/http"
 
 	"github.com/idmaksim/url-shortener-api/internal/config"
-	httpErrors "github.com/idmaksim/url-shortener-api/internal/delivery/http/errors"
 	"github.com/idmaksim/url-shortener-api/internal/delivery/http/requests"
 	"github.com/idmaksim/url-shortener-api/internal/delivery/http/responses"
-	"github.com/idmaksim/url-shortener-api/internal/domain/errors"
 	"github.com/idmaksim/url-shortener-api/internal/domain/services"
 	"github.com/labstack/echo/v4"
 )
@@ -30,8 +28,8 @@ func NewURLHandler(cfg *config.Config) *URLHandler {
 // @Produce json
 // @Param request body requests.URLCreateRequest true "URL to shorten"
 // @Success 200 {object} responses.URLResponse
-// @Failure 400 {object} httpErrors.HTTPError
-// @Failure 500 {object} httpErrors.HTTPError
+// @Failure 400 {object} errors.HttpError
+// @Failure 500 {object} errors.HttpError
 // @Router /url [post]
 func (h *URLHandler) Create(c echo.Context) error {
 	var request requests.URLCreateRequest
@@ -54,10 +52,7 @@ func (h *URLHandler) Get(c echo.Context) error {
 
 	url, err := h.urlService.Get(shortURL)
 	if err != nil {
-		if err == errors.ErrNotFound {
-			return c.JSON(http.StatusNotFound, httpErrors.NewHTTPError("URL not found", http.StatusNotFound))
-		}
-		return c.JSON(http.StatusInternalServerError, httpErrors.NewHTTPError(err.Error(), http.StatusInternalServerError))
+		return err
 	}
 
 	return c.Redirect(http.StatusTemporaryRedirect, url.OriginalURL)

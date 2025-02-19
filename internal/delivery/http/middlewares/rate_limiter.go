@@ -3,8 +3,8 @@ package middlewares
 import (
 	"net/http"
 
-	httpErrors "github.com/idmaksim/url-shortener-api/internal/delivery/http/errors"
 	rateLimiter "github.com/idmaksim/url-shortener-api/internal/delivery/http/rate_limiter"
+	"github.com/idmaksim/url-shortener-api/internal/errors"
 	"github.com/labstack/echo/v4"
 )
 
@@ -16,7 +16,12 @@ func ThrottleMiddleware(limiter *rateLimiter.IPRateLimiter) echo.MiddlewareFunc 
 			lim := limiter.GetLimiter(ip)
 
 			if !lim.Allow() {
-				return c.JSON(http.StatusTooManyRequests, httpErrors.NewHTTPError("Too many requests", http.StatusTooManyRequests))
+				return errors.NewHttpError(
+					http.StatusTooManyRequests,
+					errors.ErrCodeTooManyRequests,
+					"Too many requests",
+					nil,
+				)
 			}
 
 			return next(c)
