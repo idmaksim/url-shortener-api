@@ -6,12 +6,18 @@ import (
 	"github.com/idmaksim/url-shortener-api/internal/config"
 	"github.com/idmaksim/url-shortener-api/internal/delivery/http/requests"
 	"github.com/idmaksim/url-shortener-api/internal/delivery/http/responses"
+	"github.com/idmaksim/url-shortener-api/internal/domain/models"
 	"github.com/idmaksim/url-shortener-api/internal/domain/services"
 	"github.com/labstack/echo/v4"
 )
 
+type URLServiceInterface interface {
+	Create(request requests.URLCreateRequest) (*models.URL, error)
+	Get(shortURL string) (*models.URL, error)
+}
+
 type URLHandler struct {
-	urlService *services.URLService
+	urlService URLServiceInterface
 }
 
 func NewURLHandler(cfg *config.Config) *URLHandler {
