@@ -10,6 +10,7 @@ This project was implemented based on the requirements from [roadmap.sh URL Shor
 - 📚 Swagger API documentation
 - 🏗️ Clean Architecture design
 - 🐘 PostgreSQL storage
+- 📦 Redis caching
 - 🔒 Error handling and validation
 - 🔒 Rate limiting
 
@@ -35,6 +36,10 @@ DB_SSL_MODE=disable
 
 HTTP_PORT=8080
 HTTP_HOST=http://localhost:8080
+
+REDIS_ADDR=localhost:6379
+REDIS_PASSWORD=your_redis_password
+REDIS_DB=0
 ```
 
 ### Installation
@@ -90,6 +95,7 @@ GET /{shortURL}     # Redirect to original URL
 - **Configuration**: Environment variables with godotenv
 - **Error Handling**: Custom domain errors
 - **URL Generation**: UUID-based short URLs
+- **Caching**: Redis caching
 - **Rate Limiting**: IP-based rate limiting
 
 ## 🔨 Development
