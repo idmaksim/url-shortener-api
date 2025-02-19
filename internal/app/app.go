@@ -44,7 +44,7 @@ func (a *App) Serve() error {
 }
 
 func (a *App) RegisterRoutes(e *echo.Echo) {
-	limiter := rateLimiter.NewIPRateLimiter(1, 1)
+	limiter := rateLimiter.NewIPRateLimiter(30, 30)
 
 	e.POST("/url", a.handler.Create)
 	e.GET(":shortURL", a.handler.Get, middlewares.ThrottleMiddleware(limiter))

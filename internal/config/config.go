@@ -9,6 +9,7 @@ import (
 type Config struct {
 	Database *DatabaseConfig
 	Http     *HTTPConfig
+	Redis    *RedisConfig
 }
 
 func LoadConfig() (*Config, error) {
@@ -26,8 +27,14 @@ func LoadConfig() (*Config, error) {
 		return nil, fmt.Errorf("error loading HTTP config: %w", err)
 	}
 
+	redis, err := LoadRedisConfig()
+	if err != nil {
+		return nil, fmt.Errorf("error loading Redis config: %w", err)
+	}
+
 	return &Config{
 		Database: database,
 		Http:     http,
+		Redis:    redis,
 	}, nil
 }

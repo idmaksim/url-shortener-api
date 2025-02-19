@@ -10,7 +10,7 @@ import (
 func ErrorHandler(err error, c echo.Context) {
 	var (
 		code                = errors.ErrCodeInternal
-		message             = "Внутренняя ошибка сервера"
+		message             = "Internal server error"
 		status              = http.StatusInternalServerError
 		details interface{} = nil
 	)
