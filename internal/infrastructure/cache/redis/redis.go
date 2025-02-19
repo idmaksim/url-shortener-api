@@ -20,6 +20,7 @@ func NewRedisCache(cfg *config.Config) *RedisCache {
 			Addr:     cfg.Redis.Addr,
 			Password: cfg.Redis.Password,
 			DB:       cfg.Redis.DB,
+			Username: cfg.Redis.User,
 		}),
 	}
 }

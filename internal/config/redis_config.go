@@ -5,6 +5,7 @@ import "github.com/caarlos0/env/v11"
 type RedisConfig struct {
 	Addr     string `env:"REDIS_ADDR"`
 	Password string `env:"REDIS_PASSWORD"`
+	User     string `env:"REDIS_USER"`
 	DB       int    `env:"REDIS_DB"`
 }
 
